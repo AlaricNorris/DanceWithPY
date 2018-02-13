@@ -9,18 +9,17 @@ repeattimes = args.split(',')
 def doTheTrick(matrix):
 	for cardposition in range(4):
 		for times in range (int(matrix[cardposition])):
-			print ("finish" + cardlist[int(cardposition)]  + "|" + str(times)) 
-                #R(cardposition,times)
+			R(cardposition,times)
 
 # WIDTH = 320
-#  = 640
+# HEIGHT = 640
 # PIXEL_RATIO = 3.0
 # UA = 'Mozilla/5.0 (Linux; Android 4.1.1; GT-N7100 Build/JRO03C) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/35.0.1916.138 Mobile Safari/537.36 T7/6.3'
 # mobileEmulation = {"deviceMetrics": {"width": WIDTH, "height": HEIGHT, "pixelRatio": PIXEL_RATIO}, "userAgent": UA}
 # options = webdriver.ChromeOptions()
 
 
-failureTimes = [1,3,2,1]
+failureTimes = [0,0,0,0]
 def recordFailure(cardposition,index):
 	failureTimes[cardposition] = failureTimes[cardposition] + 1
 	print ("failed" + cardlist[int(cardposition)]  + "|" + str(index)) 
@@ -35,17 +34,19 @@ driver = webdriver.Chrome("chromedriver",0,driverOptions)
 driver.implicitly_wait(2)   # 设置隐式时间等待  
 driver.get("https://www.amazon.co.jp") 
 def R(cardposition,index):
-	driver.get("https://www.amazon.co.jp/gp/css/gc/balance?ref_=ya_d_c_gc") 
-
-	try:  
-	    time.sleep(1)
-	    # 充值礼品卡
-	    chzh = driver.find_element_by_xpath("//*/a[contains(@href,'/gp/gc/create/ref=gc-ya-view')]")
-	    chzh.click() 
-	except Exception as e:
-	    recordFailure(cardposition,index)
-	    print ("Exception found", format(e)) 
-	    return
+	#
+	#driver.get("https://www.amazon.co.jp/gp/css/gc/balance?ref_=ya_d_c_gc") 
+	# 充值礼品卡
+	driver.get("https://www.amazon.co.jp/gp/gc/create/ref=gc-ya-view") 
+#	try:  
+#	    time.sleep(1)
+#	    # 充值礼品卡
+#	    chzh = driver.find_element_by_xpath("//*/a[contains(@href,'/gp/gc/create/ref=gc-ya-view')]")
+#	    chzh.click() 
+#	except Exception as e:
+#	    recordFailure(cardposition,index)
+#	    print ("Exception found", format(e)) 
+#	    return
  
 
 	try:   
@@ -93,6 +94,7 @@ def R(cardposition,index):
 	    return
 
 	try:
+                time.sleep(0.5)
                 # 校验金额是否正确
                 #//*[@id="subtotals-marketplace-table"]/table/tbody/tr[4]/td[2]/strong
                 totalSummary = driver.find_element_by_xpath("//*[@id='subtotals-marketplace-table']/table/tbody/tr[4]/td[2]/strong")
@@ -103,7 +105,7 @@ def R(cardposition,index):
                                 # 提交订单
                                 placeYourOrder = driver.find_element_by_name("placeYourOrder1")
                                 print(str(placeYourOrder))
-                                #placeYourOrder.click()
+                                placeYourOrder.click()
                                 time.sleep(0.5)
                 print ("finish" + cardlist[int(cardposition)]  + "|" + str(index))                      	    
 	except Exception as e:  
@@ -133,7 +135,7 @@ while realRetry[0] != 0 or realRetry[1] != 0 or realRetry[2] != 0 or realRetry[3
 	
 	retryIndex = retryIndex + 1
 	doTheTrick(realRetry)
-	print ("Retry " + str(retryIndex) + " Times") 
+	print ("Retry Accomplished " + str(retryIndex) + " Times") 
 	realRetry = [0,0,0,0]
 	for index in range(4):
 		realRetry[index] = failureTimes[index]
