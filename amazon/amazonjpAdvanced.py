@@ -61,7 +61,7 @@ def R(cardposition,index):
 	    return
 
 	try:  
-		time.sleep(0.5)
+		time.sleep(1)
 		# 继续
 		submit = driver.find_element_by_id("form-submit-button")
 		submit.click()
@@ -71,7 +71,7 @@ def R(cardposition,index):
 	    return
 
 	try:  
-		time.sleep(1)
+		time.sleep(2)
 		# 卡 //*[@id="existing-credit-cards-box"]/div[3]
 		#//*[@id="pm_0"]
 		#card = driver.find_element_by_id("pm_" + str(cardposition))
@@ -87,33 +87,33 @@ def R(cardposition,index):
 		# 继续
 		contimuetop = driver.find_element_by_id("continue-top")
 		contimuetop.click()
-		time.sleep(0.5)
+		time.sleep(1)
 	except Exception as e:  
 	    recordFailure(cardposition,index)
 	    print ("Exception found", format(e))  
 	    return
 
 	try:
-                time.sleep(0.5)
-                # 校验金额是否正确
-                #//*[@id="subtotals-marketplace-table"]/table/tbody/tr[4]/td[2]/strong
-                totalSummary = driver.find_element_by_xpath("//*[@id='subtotals-marketplace-table']/table/tbody/tr[4]/td[2]/strong")
-                if totalSummary.text == "￥ 15":
-                        # 校验是否选择对了
-                        validate = driver.find_element_by_xpath("//*[@id='payment-information']/ul/li/span/span[2]")
-                        if validate.text == cardlist[int(cardposition)] :
-                                # 提交订单
-                                placeYourOrder = driver.find_element_by_name("placeYourOrder1")
-                                print(str(placeYourOrder))
-                                placeYourOrder.click()
-                                time.sleep(0.5)
-                print ("finish" + cardlist[int(cardposition)]  + "|" + str(index))                      	    
+	    time.sleep(1)
+	    # 校验金额是否正确
+	    #//*[@id="subtotals-marketplace-table"]/table/tbody/tr[4]/td[2]/strong
+	    totalSummary = driver.find_element_by_xpath("//*[@id='subtotals-marketplace-table']/table/tbody/tr[4]/td[2]/strong")
+	    if totalSummary.text == "￥ 15":
+	        # 校验是否选择对了
+	        validate = driver.find_element_by_xpath("//*[@id='payment-information']/ul/li/span/span[2]")
+	        if validate.text == cardlist[int(cardposition)] :
+	            # 提交订单
+	            placeYourOrder = driver.find_element_by_name("placeYourOrder1")
+	            print(str(placeYourOrder))
+	            placeYourOrder.click()
+	            print ("finish" + cardlist[int(cardposition)]  + "|" + str(index)) 
+	            time.sleep(1)
 	except Exception as e:  
 	    recordFailure(cardposition,index)
-	    print ("Exception found", format(e)) 
+	    print ("Exception found", format(e))  
 	    return
 
-	time.sleep(0.5)
+	time.sleep(1)
 
 
 #for cardposition in range(4):
